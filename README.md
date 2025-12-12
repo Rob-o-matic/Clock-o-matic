@@ -1,39 +1,222 @@
-# Time-o-matic (Google Slides Clock)
+# Clock-o-matic
 
-A Chrome extension that overlays a visual schedule clock directly inside Google Slides. Click the toolbar icon or use the shortcut to toggle a draggable clock that shows colored time blocks, ticking hands, alarms, and a minimal or fullscreen presentation mode.
+A Chrome extension that brings a beautiful, interactive visual timer to Google Slides. Perfect for presentations, training sessions, workshops, and any scenario where you need to display time blocks with visual progress tracking.
 
-## What it does
-- Injects a floating clock UI on Slides (`docs.google.com/presentation/*`).
-- Lets you add labeled time blocks (minutes + color) that render as a conic gradient ring on the clock face.
-- Plays a short chime when each block completes; sound can be toggled on/off.
-- Supports quick modes: minimal mode (hide controls), maximized mode (fullscreen overlay), and drag-to-reposition with per-presentation persistence.
-- Saves state (position, visibility, mode, rows, active blocks, alarms, sound) per presentation via `chrome.storage.local`.
-- Provides a "Buy me a coffee" link and toggleable sound icon with hover auto-hide.
+## Features
 
-## Controls
-- **Toggle extension**: Click the extension icon or press the command shortcut (`Alt+Shift+C`, macOS `Ctrl+Shift+C`).
-- **Add blocks**: Use `+` to insert rows (minutes, label, color), then **Set Visual Schedule**.
-- **Clear**: Removes current blocks/alarms.
-- **Sound toggle**: Speaker icon on the clock case.
-- **Fullscreen**: Maximize icon (toggles maximize/minimize).
-- **Minimal mode**: Click the clock body (when not dragged) to hide controls.
-- **Drag**: Drag the container (not while maximized) to reposition; position persists per deck.
+✨ **Visual Time Blocks**
+- Create a schedule with labeled time segments, each with its own color
+- Watch as colored blocks rotate around the clock face, showing elapsed time in gray and remaining time in color
+- Perfect for presenting agendas, lesson plans, or workshop itineraries
 
-## Installation (unpacked)
-1. Clone or download this repo.
-2. Open Chrome → `chrome://extensions`.
-3. Enable **Developer mode** (top right).
-4. Click **Load unpacked** and select the project folder.
-5. Pin the extension if desired. Use the icon or shortcut to toggle on a Slides deck.
+⏰ **Real-Time Clock**
+- Displays hour, minute, and second hands synchronized to your system time
+- Visual base ring shows overall schedule progress at a glance
+- Draggable, resizable, and toggles between minimal and fullscreen modes
+
+🔔 **Smart Alarms**
+- Plays a pleasant chime at the end of each time block
+- Toggle sound on/off with a single click
+- Alarms fire even if you switch tabs or scroll your slides
+
+💾 **Per-Presentation Persistence**
+- All settings (position, size, blocks, alarms) auto-save and restore per Google Slides deck
+- Switch between presentations and find your clock exactly where you left it
+- Label positions are preserved across sessions
+
+📱 **Flexible Display Modes**
+- **Minimal mode**: Hide controls to focus on the clock display during presentation
+- **Fullscreen mode**: Maximize the clock to dominate your screen for large rooms
+- **Draggable**: Reposition anywhere on the slide with smooth drag-and-drop
+- **Resizable**: Scale from compact to large with corner/edge resize handles
+
+## How to Use
+
+### Installation
+1. Clone or download this repository
+2. Open Chrome and navigate to `chrome://extensions`
+3. Enable **Developer Mode** (toggle in the top right)
+4. Click **Load unpacked** and select the `Clock-o-matic` folder
+5. The extension icon will appear in your toolbar; pin it for easy access
+
+### Getting Started
+1. Open any Google Slides presentation
+2. Click the Clock-o-matic icon in your toolbar to toggle the clock
+3. Enter your time blocks:
+   - **Minutes**: Duration of each segment
+   - **Label**: Name of the segment (e.g., "Intro", "Q&A", "Break")
+   - **Color**: Click the color box to choose a segment color
+4. Click **Set Visual Schedule** to start the timer
+5. Watch the clock! Each segment will pulse with color as time advances
+
+### Tips
+- **Dragging labels**: Click and drag labels to reposition them if they overlap or need adjustment
+- **Sound**: Use the speaker icon to toggle alarm chimes on/off
+- **Fullscreen**: Click the maximize icon for a large, presentation-friendly display
+- **Minimal mode**: Click the clock face itself to quickly hide controls during presentation
+- **Clear schedule**: Use the Clear button to reset everything and start fresh
+
+## Support the Project
+
+If Clock-o-matic helps make your presentations better, consider supporting development:
+
+☕ **[Buy me a coffee](https://www.buymeacoffee.com/Robomatic)** — Your small donation helps fuel ongoing improvements, new features, and free tools for educators and presenters.
+
+## Technical Details
+
+**Built with:**
+- Chrome Manifest V3
+- Vanilla JavaScript (no frameworks)
+- Web Audio API for chimes
+- CSS conic-gradients for visual segments
+- Chrome Storage API for persistence
+
+**Permissions:**
+- `activeTab`: Detect when you're on Google Slides
+- `scripting`: Inject the clock UI
+- `storage`: Save your settings per presentation
+
+**Browser Support:**
+- Chrome/Chromium 88+
 
 ## Files
-- `manifest.json` — Manifest V3, permissions (`activeTab`, `scripting`, `storage`), background service worker, command binding.
-- `background.js` — Handles toolbar click and keyboard command; sends `toggle_clock` to the active Slides tab.
-- `content.js` — Injected UI, clock logic, alarms, schedule drawing, persistence, drag/minimize/maximize behaviors.
-- `styles.css` — Styling for the clock, labels, controls, modes, and animations.
 
-## Notes & limitations
-- Designed specifically for Google Slides pages; ignored elsewhere.
-- Audio uses the Web Audio API per alarm; some browsers may block autoplay if the page has never received user interaction.
-- Storage is per presentation id; if Slides URL format changes, persistence may fall back to a global default.
-- No tests or linting are currently included.
+| File | Purpose |
+|------|---------|
+| `manifest.json` | Chrome extension configuration (V3) |
+| `background.js` | Handles toolbar clicks and keyboard shortcuts |
+| `content.js` | Main clock logic, UI rendering, and state management |
+| `styles.css` | All styling for the clock interface |
+| `icon128.png` | Extension icon |
+
+## Limitations & Notes
+
+- This extension works only on Google Slides (`docs.google.com/presentation/*`)
+- Alarms require audio permissions; some browsers may block audio on first interaction
+- Settings are stored per presentation in browser local storage
+- Works best on Chrome and Chromium-based browsers
+
+## Roadmap
+
+See `CoPilotToDo.md` for planned improvements and known issues.
+
+## License
+
+Distributed freely. If you modify and redistribute, please credit the original.
+
+---
+
+**Questions or feedback?** Create an issue on the GitHub repository or reach out via the donation link.
+
+Happy presenting! 🎉
+# Clock-o-matic
+
+A Chrome extension that brings a beautiful, interactive visual timer to Google Slides. Perfect for presentations, training sessions, workshops, and any scenario where you need to display time blocks with visual progress tracking.
+
+## Features
+
+✨ **Visual Time Blocks**
+- Create a schedule with labeled time segments, each with its own color
+- Watch as colored blocks rotate around the clock face, showing elapsed time in gray and remaining time in color
+- Perfect for presenting agendas, lesson plans, or workshop itineraries
+
+⏰ **Real-Time Clock**
+- Displays hour, minute, and second hands synchronized to your system time
+- Visual base ring shows overall schedule progress at a glance
+- Draggable, resizable, and toggles between minimal and fullscreen modes
+
+🔔 **Smart Alarms**
+- Plays a pleasant chime at the end of each time block
+- Toggle sound on/off with a single click
+- Alarms fire even if you switch tabs or scroll your slides
+
+💾 **Per-Presentation Persistence**
+- All settings (position, size, blocks, alarms) auto-save and restore per Google Slides deck
+- Switch between presentations and find your clock exactly where you left it
+- Label positions are preserved across sessions
+
+📱 **Flexible Display Modes**
+- **Minimal mode**: Hide controls to focus on the clock display during presentation
+- **Fullscreen mode**: Maximize the clock to dominate your screen for large rooms
+- **Draggable**: Reposition anywhere on the slide with smooth drag-and-drop
+- **Resizable**: Scale from compact to large with corner/edge resize handles
+
+## How to Use
+
+### Installation
+1. Clone or download this repository
+2. Open Chrome and navigate to `chrome://extensions`
+3. Enable **Developer Mode** (toggle in the top right)
+4. Click **Load unpacked** and select the `Clock-o-matic` folder
+5. The extension icon will appear in your toolbar; pin it for easy access
+
+### Getting Started
+1. Open any Google Slides presentation
+2. Click the Clock-o-matic icon in your toolbar to toggle the clock
+3. Enter your time blocks:
+   - **Minutes**: Duration of each segment
+   - **Label**: Name of the segment (e.g., "Intro", "Q&A", "Break")
+   - **Color**: Click the color box to choose a segment color
+4. Click **Set Visual Schedule** to start the timer
+5. Watch the clock! Each segment will pulse with color as time advances
+
+### Tips
+- **Dragging labels**: Click and drag labels to reposition them if they overlap or need adjustment
+- **Sound**: Use the speaker icon to toggle alarm chimes on/off
+- **Fullscreen**: Click the maximize icon for a large, presentation-friendly display
+- **Minimal mode**: Click the clock face itself to quickly hide controls during presentation
+- **Clear schedule**: Use the Clear button to reset everything and start fresh
+
+## Support the Project
+
+If Clock-o-matic helps make your presentations better, consider supporting development:
+
+☕ **[Buy me a coffee](https://www.buymeacoffee.com/Robomatic)** — Your small donation helps fuel ongoing improvements, new features, and free tools for educators and presenters.
+
+## Technical Details
+
+**Built with:**
+- Chrome Manifest V3
+- Vanilla JavaScript (no frameworks)
+- Web Audio API for chimes
+- CSS conic-gradients for visual segments
+- Chrome Storage API for persistence
+
+**Permissions:**
+- `activeTab`: Detect when you're on Google Slides
+- `scripting`: Inject the clock UI
+- `storage`: Save your settings per presentation
+
+**Browser Support:**
+- Chrome/Chromium 88+
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `manifest.json` | Chrome extension configuration (V3) |
+| `background.js` | Handles toolbar clicks and keyboard shortcuts |
+| `content.js` | Main clock logic, UI rendering, and state management |
+| `styles.css` | All styling for the clock interface |
+| `icon128.png` | Extension icon |
+
+## Limitations & Notes
+
+- This extension works only on Google Slides (`docs.google.com/presentation/*`)
+- Alarms require audio permissions; some browsers may block audio on first interaction
+- Settings are stored per presentation in browser local storage
+- Works best on Chrome and Chromium-based browsers
+
+## Roadmap
+
+See `CoPilotToDo.md` for planned improvements and known issues.
+
+## License
+
+Distributed freely. If you modify and redistribute, please credit the original.
+
+---
+
+**Questions or feedback?** Create an issue on the GitHub repository or reach out via the donation link.
+
+Happy presenting! 🎉
