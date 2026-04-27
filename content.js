@@ -134,6 +134,37 @@ let activeBlocks = [];
 let inputRows = [{ min: 15, label: '', color: PALETTE[0] }];
 let currentScale = 1.0;
 let originalScale = 1.0; // To remember the user's preferred/original scale
+
+function toggleMinimalModeWithScaling(forceMode) {
+    // forceMode: true = minimal, false = full, undefined = toggle
+    const isMinimal = container.classList.contains('minimal-mode');
+    let willShowSettings = isMinimal;
+    if (typeof forceMode === 'boolean') willShowSettings = !forceMode;
+    if (willShowSettings) {
+        // About to show settings (exit minimal-mode): auto-shrink if needed
+        originalScale = currentScale; // Remember the user's scale
+        container.classList.remove('minimal-mode');
+        container.style.transform = `scale(${currentScale})`;
+        setTimeout(() => {
+            const viewportHeight = window.innerHeight;
+            const rect = container.getBoundingClientRect();
+            const margin = 24;
+            const maxHeight = viewportHeight - margin;
+            let scale = currentScale;
+            if (rect.height > maxHeight) {
+                scale = Math.max(0.5, maxHeight / rect.height * currentScale);
+                currentScale = scale;
+                container.style.transform = `scale(${currentScale})`;
+            }
+        }, 0);
+    } else {
+        // About to hide settings (enter minimal-mode): restore original scale
+        currentScale = originalScale;
+        container.style.transform = `scale(${currentScale})`;
+    }
+    container.classList.toggle('minimal-mode', typeof forceMode === 'boolean' ? forceMode : undefined);
+    saveState();
+}
 let labelOffsets = {}; // Store user-adjusted label positions by label text
 let scheduleStartTime = null; // Track when schedule started
 let scheduleEndTime = null;   // Track when schedule ends
@@ -725,6 +756,8 @@ function toggleMaximize() {
 }
 
 // --- LISTENERS ---
+// Optionally, expose toggleMinimalModeWithScaling for other UI triggers
+window.toggleMinimalModeWithScaling = toggleMinimalModeWithScaling;
 
 caseIcon.addEventListener('click', (e) => { e.stopPropagation(); toggleSound(); });
 donationIcon.addEventListener('click', (e) => { e.stopPropagation(); window.open(DONATION_URL, '_blank'); });
@@ -781,30 +814,34 @@ document.querySelectorAll('.resize-handle').forEach(handle => {
         
         function onMouseMove(event) {
             if (!isResizing) return;
-            
-            const dx = event.clientX - startX;
-            const dy = event.clientY - startY;
-            
-            // Use diagonal distance for uniform scaling
-            let scaleFactor = 1;
-            if (resizeDirection.includes('e')) scaleFactor += dx / 260;
-            else if (resizeDirection.includes('w')) scaleFactor -= dx / 260;
-            if (resizeDirection.includes('s')) scaleFactor += dy / 260;
-            else if (resizeDirection.includes('n')) scaleFactor -= dy / 260;
-            
-            currentScale = Math.max(0.5, Math.min(5, startScale * scaleFactor));
-            container.style.transform = `scale(${currentScale})`;
-            
-            // Adjust position to keep the opposite corner fixed
-            if (resizeDirection.includes('w') || resizeDirection.includes('n')) {
-                const scaleDiff = currentScale - startScale;
-                if (resizeDirection.includes('w')) {
-                    container.style.left = (startLeft - (260 * scaleDiff)) + 'px';
-                }
-                if (resizeDirection.includes('n')) {
-                    container.style.top = (startTop - (rect.height / startScale * scaleDiff)) + 'px';
-                }
+            // Calculate the scale so the point under the mouse stays under the mouse
+            let scale = startScale;
+            if (resizeDirection === 's' || resizeDirection === 'n') {
+                // Vertical resize: scale so the mouse stays at the same relative Y
+                const mouseY = event.clientY;
+                const anchorY = resizeDirection === 's' ? rect.top : rect.bottom;
+                const newHeight = Math.abs(mouseY - anchorY);
+                scale = Math.max(0.5, Math.min(5, newHeight / rect.height * startScale));
+            } else if (resizeDirection === 'e' || resizeDirection === 'w') {
+                // Horizontal resize: scale so the mouse stays at the same relative X
+                const mouseX = event.clientX;
+                const anchorX = resizeDirection === 'e' ? rect.left : rect.right;
+                const newWidth = Math.abs(mouseX - anchorX);
+                scale = Math.max(0.5, Math.min(5, newWidth / rect.width * startScale));
+            } else {
+                // Corner or diagonal: use the greater of X or Y scaling
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+                const anchorX = resizeDirection.includes('e') ? rect.left : rect.right;
+                const anchorY = resizeDirection.includes('s') ? rect.top : rect.bottom;
+                const newWidth = Math.abs(mouseX - anchorX);
+                const newHeight = Math.abs(mouseY - anchorY);
+                const scaleX = newWidth / rect.width * startScale;
+                const scaleY = newHeight / rect.height * startScale;
+                scale = Math.max(0.5, Math.min(5, Math.max(scaleX, scaleY)));
             }
+            currentScale = scale;
+            container.style.transform = `scale(${currentScale})`;
         }
         
         function onMouseUp() {
@@ -848,58 +885,11 @@ container.addEventListener('mousedown', (e) => {
             saveState();
         } else {
             if(!container.classList.contains('maximized-mode')) {
-                // Toggling minimal-mode (settings panel)
-                const willShowSettings = container.classList.contains('minimal-mode');
-                if (willShowSettings) {
-                    // About to show settings (exit minimal-mode): auto-shrink if needed
-                    originalScale = currentScale; // Remember the user's scale
-                    // Temporarily remove minimal-mode to measure full height
-                    container.classList.remove('minimal-mode');
-                    container.style.transform = `scale(${currentScale})`;
-                    // Allow DOM to update
-                    setTimeout(() => {
-                        const viewportHeight = window.innerHeight;
-                        const rect = container.getBoundingClientRect();
-                        const margin = 24; // Some margin from edges
-                        const maxHeight = viewportHeight - margin;
-                        let scale = currentScale;
-                        if (rect.height > maxHeight) {
-                            scale = Math.max(0.5, maxHeight / rect.height * currentScale);
-                            currentScale = scale;
-                            container.style.transform = `scale(${currentScale})`;
-                        }
-                    }, 0);
-                } else {
-                    // About to hide settings (enter minimal-mode): restore original scale
-                    currentScale = originalScale;
-                    container.style.transform = `scale(${currentScale})`;
-                }
-                container.classList.toggle('minimal-mode');
-                saveState();
+                toggleMinimalModeWithScaling();
             }
         }
-    };
+}
 });
-
-
-// For web: always append to body, and show clock by default
-function moveClockToFullscreen() {
-    const fsElement = document.fullscreenElement;
-    if (fsElement) fsElement.appendChild(container);
-    else document.body.appendChild(container);
-}
-document.addEventListener("fullscreenchange", moveClockToFullscreen);
-
-// Show clock by default on web
-container.style.display = "flex";
-startClockLoop();
-
-// --- HELPERS ---
-function computeRotationFromTimestamp(ts) {
-    const d = new Date(ts);
-    return (d.getMinutes() + (d.getSeconds() / 60)) * 6;
-}
-
 function getStartRotation() {
     if (scheduleStartRotation !== null && scheduleStartRotation !== undefined) return scheduleStartRotation;
     if (scheduleStartTime) return computeRotationFromTimestamp(scheduleStartTime);
