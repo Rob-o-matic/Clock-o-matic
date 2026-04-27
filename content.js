@@ -81,6 +81,10 @@ const createClockHTML = () => {
 
 document.body.insertAdjacentHTML('beforeend', createClockHTML());
 
+// Show clock by default on web
+const container = document.getElementById('slide-clock-container');
+container.style.display = 'flex';
+
 // --- DOM ELEMENTS ---
 const container = document.getElementById('slide-clock-container');
 const clockFace = document.querySelector('.clock-face');
