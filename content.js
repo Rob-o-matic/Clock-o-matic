@@ -43,9 +43,8 @@ const createClockHTML = () => {
       <div class="resize-handle edge right"></div>
       
       <!-- Icons -->
-      <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
-      <div id="btn-maximize" title="Fullscreen Mode">${ICON_MAXIMIZE}</div>
-      <div id="case-sound-toggle" title="Toggle Sound"></div>
+    <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
+    <div id="case-sound-toggle" title="Toggle Sound"></div>
       
       <div class="clock-face">
         ${ticksHTML}
