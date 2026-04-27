@@ -220,30 +220,27 @@ function getPresentationId() {
     return 'global_default';
 }
 
+
+// --- WEB PERSISTENCE (localStorage) ---
 function storageGet(keys, cb) {
-    if (!chrome?.storage?.local) {
-        console.warn('Clock storage unavailable');
-        cb({});
-        return;
-    }
-    chrome.storage.local.get(keys, (result) => {
-        if (chrome.runtime.lastError) {
-            console.warn('Clock storage get failed', chrome.runtime.lastError);
-            cb({});
-            return;
+    let result = {};
+    keys.forEach((key) => {
+        try {
+            const val = localStorage.getItem(key);
+            result[key] = val ? JSON.parse(val) : undefined;
+        } catch (e) {
+            result[key] = undefined;
         }
-        cb(result || {});
     });
+    cb(result);
 }
 
 function storageSet(obj) {
-    if (!chrome?.storage?.local) {
-        console.warn('Clock storage unavailable');
-        return;
-    }
-    chrome.storage.local.set(obj, () => {
-        if (chrome.runtime.lastError) {
-            console.warn('Clock storage set failed', chrome.runtime.lastError);
+    Object.entries(obj).forEach(([key, val]) => {
+        try {
+            localStorage.setItem(key, JSON.stringify(val));
+        } catch (e) {
+            // ignore
         }
     });
 }
@@ -853,27 +850,18 @@ container.addEventListener('mousedown', (e) => {
     };
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "toggle_clock") {
-        const isHidden = container.style.display === "none";
-        moveClockToFullscreen();
-        if (isHidden) {
-            container.style.display = "flex";
-            startClockLoop();
-        } else {
-            container.style.display = "none";
-            clearInterval(intervalId);
-        }
-        saveState();
-    }
-});
 
+// For web: always append to body, and show clock by default
 function moveClockToFullscreen() {
     const fsElement = document.fullscreenElement;
     if (fsElement) fsElement.appendChild(container);
     else document.body.appendChild(container);
 }
 document.addEventListener("fullscreenchange", moveClockToFullscreen);
+
+// Show clock by default on web
+container.style.display = "flex";
+startClockLoop();
 
 // --- HELPERS ---
 function computeRotationFromTimestamp(ts) {
