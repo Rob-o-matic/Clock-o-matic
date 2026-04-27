@@ -1,8 +1,25 @@
+
 # Clock-o-matic
+
+
+Clock-o-matic is available as both a Chrome extension for Google Slides **and** as a standalone web app you can use in any browser!
+
+**Note:** The Chrome extension is not published on the Chrome Web Store yet. You can use the web version immediately, or load the extension manually as described below.
+
+## Web Version
+
+Try the web version instantly at:
+
+**https://rob-o-matic.github.io/Clock-o-matic/**
+
+No installation required. All features work in your browser, and your settings are saved locally.
+
+## Chrome Extension
 
 A Chrome extension that brings a beautiful, interactive visual timer to Google Slides. Perfect for presentations, training sessions, workshops, and any scenario where you need to display time blocks with visual progress tracking.
 
-## Features
+
+## Features (Both Versions)
 
 ✨ **Visual Time Blocks**
 - Create a schedule with labeled time segments, each with its own color
@@ -30,29 +47,31 @@ A Chrome extension that brings a beautiful, interactive visual timer to Google S
 - **Draggable**: Reposition anywhere on the slide with smooth drag-and-drop
 - **Resizable**: Scale from compact to large with corner/edge resize handles
 
+
 ## How to Use
 
-### Installation
+### Web App
+1. Go to [https://rob-o-matic.github.io/Clock-o-matic/](https://rob-o-matic.github.io/Clock-o-matic/)
+2. Enter your time blocks:
+   - **Minutes**: Duration of each segment
+   - **Label**: Name of the segment (e.g., "Intro", "Q&A", "Break")
+   - **Color**: Click the color box to choose a segment color
+3. Click **Set Visual Schedule** to start the timer
+4. Watch the clock! Each segment will pulse with color as time advances
+5. All your settings are saved in your browser (localStorage)
+
+### Chrome Extension
 1. Clone or download this repository
 2. Open Chrome and navigate to `chrome://extensions`
 3. Enable **Developer Mode** (toggle in the top right)
 4. Click **Load unpacked** and select the `Clock-o-matic` folder
 5. The extension icon will appear in your toolbar; pin it for easy access
+6. Open any Google Slides presentation
+7. Click the Clock-o-matic icon in your toolbar to toggle the clock
 
-### Getting Started
-1. Open any Google Slides presentation
-2. Click the Clock-o-matic icon in your toolbar to toggle the clock
-3. Enter your time blocks:
-   - **Minutes**: Duration of each segment
-   - **Label**: Name of the segment (e.g., "Intro", "Q&A", "Break")
-   - **Color**: Click the color box to choose a segment color
-4. Click **Set Visual Schedule** to start the timer
-5. Watch the clock! Each segment will pulse with color as time advances
-
-### Tips
+### Tips (Both Versions)
 - **Dragging labels**: Click and drag labels to reposition them if they overlap or need adjustment
 - **Sound**: Use the speaker icon to toggle alarm chimes on/off
-- **Fullscreen**: Click the maximize icon for a large, presentation-friendly display
 - **Minimal mode**: Click the clock face itself to quickly hide controls during presentation
 - **Clear schedule**: Use the Clear button to reset everything and start fresh
 
@@ -163,7 +182,6 @@ A Chrome extension that brings a beautiful, interactive visual timer to Google S
 ### Tips
 - **Dragging labels**: Click and drag labels to reposition them if they overlap or need adjustment
 - **Sound**: Use the speaker icon to toggle alarm chimes on/off
-- **Fullscreen**: Click the maximize icon for a large, presentation-friendly display
 - **Minimal mode**: Click the clock face itself to quickly hide controls during presentation
 - **Clear schedule**: Use the Clear button to reset everything and start fresh
 
