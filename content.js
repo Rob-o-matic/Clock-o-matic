@@ -721,13 +721,14 @@ function toggleMaximize() {
 }
 
 // --- LISTENERS ---
+
 caseIcon.addEventListener('click', (e) => { e.stopPropagation(); toggleSound(); });
 donationIcon.addEventListener('click', (e) => { e.stopPropagation(); window.open(DONATION_URL, '_blank'); });
-maximizeIcon.addEventListener('click', (e) => { e.stopPropagation(); toggleMaximize(); });
+// maximizeIcon is hidden and disabled
 
 attachKeyboardActivation(caseIcon, toggleSound);
 attachKeyboardActivation(donationIcon, () => window.open(DONATION_URL, '_blank'));
-attachKeyboardActivation(maximizeIcon, toggleMaximize);
+// attachKeyboardActivation(maximizeIcon, toggleMaximize); // disabled
 
 btnAddRow.addEventListener('click', addRow);
 btnSetBlock.addEventListener('click', setSchedule);
