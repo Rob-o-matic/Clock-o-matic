@@ -35,6 +35,17 @@
 #slide-clock-container.minimal-mode { width: 190px; overflow: hidden; }
 #slide-clock-container.minimal-mode .controls { display: none !important; }
 
+/* Visual indicator for settings panel */
+#slide-clock-container .controls {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid #66BB6A;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(102,187,106,0.15);
+  margin-top: 10px;
+  padding: 8px 4px 4px 4px;
+  transition: background 0.2s, border 0.2s;
+}
+
 
 #slide-clock-container.maximized-mode {
   top: 0 !important;
