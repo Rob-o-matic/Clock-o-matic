@@ -94,6 +94,15 @@ const caseIcon = document.getElementById('case-sound-toggle');
 const donationIcon = document.getElementById('donation-link');
 const maximizeIcon = document.getElementById('btn-maximize');
 
+// Make the whole clock face toggle settings (minimal/full mode) on click
+clockFace.addEventListener('click', (e) => {
+    // Prevent toggling if clicking on a control inside the clock face
+    if (e.target.closest('.block-row') || e.target.closest('.controls') || e.target.closest('.resize-handle')) return;
+    if (!container.classList.contains('maximized-mode')) {
+        toggleMinimalModeWithScaling();
+    }
+});
+
 // Cache clock hand references
 let secondHand = null;
 let minHand = null;
@@ -814,31 +823,20 @@ document.querySelectorAll('.resize-handle').forEach(handle => {
         
         function onMouseMove(event) {
             if (!isResizing) return;
-            // Calculate the scale so the point under the mouse stays under the mouse
             let scale = startScale;
-            if (resizeDirection === 's' || resizeDirection === 'n') {
-                // Vertical resize: scale so the mouse stays at the same relative Y
-                const mouseY = event.clientY;
-                const anchorY = resizeDirection === 's' ? rect.top : rect.bottom;
-                const newHeight = Math.abs(mouseY - anchorY);
-                scale = Math.max(0.5, Math.min(5, newHeight / rect.height * startScale));
+            if (resizeDirection.length === 2) {
+                // Corner: use diagonal distance from the opposite corner
+                const dx = (resizeDirection.includes('e') ? 1 : -1) * (event.clientX - startX);
+                const dy = (resizeDirection.includes('s') ? 1 : -1) * (event.clientY - startY);
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const base = Math.sqrt(rect.width * rect.width + rect.height * rect.height);
+                scale = Math.max(0.5, Math.min(5, startScale * (1 + dist / base)));
+            } else if (resizeDirection === 'n' || resizeDirection === 's') {
+                const dy = (resizeDirection === 's' ? 1 : -1) * (event.clientY - startY);
+                scale = Math.max(0.5, Math.min(5, startScale * (1 + dy / rect.height)));
             } else if (resizeDirection === 'e' || resizeDirection === 'w') {
-                // Horizontal resize: scale so the mouse stays at the same relative X
-                const mouseX = event.clientX;
-                const anchorX = resizeDirection === 'e' ? rect.left : rect.right;
-                const newWidth = Math.abs(mouseX - anchorX);
-                scale = Math.max(0.5, Math.min(5, newWidth / rect.width * startScale));
-            } else {
-                // Corner or diagonal: use the greater of X or Y scaling
-                const mouseX = event.clientX;
-                const mouseY = event.clientY;
-                const anchorX = resizeDirection.includes('e') ? rect.left : rect.right;
-                const anchorY = resizeDirection.includes('s') ? rect.top : rect.bottom;
-                const newWidth = Math.abs(mouseX - anchorX);
-                const newHeight = Math.abs(mouseY - anchorY);
-                const scaleX = newWidth / rect.width * startScale;
-                const scaleY = newHeight / rect.height * startScale;
-                scale = Math.max(0.5, Math.min(5, Math.max(scaleX, scaleY)));
+                const dx = (resizeDirection === 'e' ? 1 : -1) * (event.clientX - startX);
+                scale = Math.max(0.5, Math.min(5, startScale * (1 + dx / rect.width)));
             }
             currentScale = scale;
             container.style.transform = `scale(${currentScale})`;
