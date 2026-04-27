@@ -133,6 +133,7 @@ let isSoundOn = true;
 let activeBlocks = []; 
 let inputRows = [{ min: 15, label: '', color: PALETTE[0] }];
 let currentScale = 1.0;
+let originalScale = 1.0; // To remember the user's preferred/original scale
 let labelOffsets = {}; // Store user-adjusted label positions by label text
 let scheduleStartTime = null; // Track when schedule started
 let scheduleEndTime = null;   // Track when schedule ends
@@ -343,6 +344,7 @@ function updateClockHands() {
         initClockHands();
     }
     
+
     const now = new Date();
     const seconds = now.getSeconds();
     const mins = now.getMinutes();
@@ -350,9 +352,10 @@ function updateClockHands() {
     const secDeg = ((seconds / 60) * 360);
     const minDeg = ((mins / 60) * 360) + ((seconds/60)*6);
     const hourDeg = ((hour / 12) * 360) + ((mins/60)*30);
-    
+
     try {
         if (secondHand) {
+            secondHand.style.transition = 'transform 0.05s linear';
             secondHand.style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
         }
         if (minHand) {
@@ -845,6 +848,32 @@ container.addEventListener('mousedown', (e) => {
             saveState();
         } else {
             if(!container.classList.contains('maximized-mode')) {
+                // Toggling minimal-mode (settings panel)
+                const willShowSettings = container.classList.contains('minimal-mode');
+                if (willShowSettings) {
+                    // About to show settings (exit minimal-mode): auto-shrink if needed
+                    originalScale = currentScale; // Remember the user's scale
+                    // Temporarily remove minimal-mode to measure full height
+                    container.classList.remove('minimal-mode');
+                    container.style.transform = `scale(${currentScale})`;
+                    // Allow DOM to update
+                    setTimeout(() => {
+                        const viewportHeight = window.innerHeight;
+                        const rect = container.getBoundingClientRect();
+                        const margin = 24; // Some margin from edges
+                        const maxHeight = viewportHeight - margin;
+                        let scale = currentScale;
+                        if (rect.height > maxHeight) {
+                            scale = Math.max(0.5, maxHeight / rect.height * currentScale);
+                            currentScale = scale;
+                            container.style.transform = `scale(${currentScale})`;
+                        }
+                    }, 0);
+                } else {
+                    // About to hide settings (enter minimal-mode): restore original scale
+                    currentScale = originalScale;
+                    container.style.transform = `scale(${currentScale})`;
+                }
                 container.classList.toggle('minimal-mode');
                 saveState();
             }
