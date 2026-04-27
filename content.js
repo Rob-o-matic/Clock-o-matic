@@ -86,7 +86,6 @@ const container = document.getElementById('slide-clock-container');
 container.style.display = 'flex';
 
 // --- DOM ELEMENTS ---
-const container = document.getElementById('slide-clock-container');
 const clockFace = document.querySelector('.clock-face');
 const timerDisk = document.querySelector('.timer-disk');
 const labelsContainer = document.getElementById('labels-container');
