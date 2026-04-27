@@ -677,15 +677,17 @@ function attachLabelDragHandlers() {
 
 function setSchedule() {
     activeBlocks = [];
-    alarmQueue = []; 
-    const nowTs = Date.now();
-    scheduleStartTime = nowTs;
-    scheduleStartRotation = computeRotationFromTimestamp(nowTs);
-    let cumulativeTime = scheduleStartTime; 
+    alarmQueue = [];
+    // Only set scheduleStartTime if not already set (preserve across refresh)
+    if (!scheduleStartTime) {
+        scheduleStartTime = Date.now();
+        scheduleStartRotation = computeRotationFromTimestamp(scheduleStartTime);
+    }
+    let cumulativeTime = scheduleStartTime;
     // Reset any manually dragged offsets so labels realign to their segments for the new schedule
     labelOffsets = {};
     lastBaseLabelPositions = {};
-    
+
     inputRows.forEach(row => {
         const minVal = parseInt(row.min);
         if(minVal && minVal > 0) {
@@ -695,9 +697,9 @@ function setSchedule() {
         }
     });
     scheduleEndTime = cumulativeTime;
-    
+
     if(activeBlocks.length === 0) return;
-    
+
     drawVisualBlocks(activeBlocks);
     container.classList.add('minimal-mode');
     saveState();
