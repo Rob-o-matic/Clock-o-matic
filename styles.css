@@ -164,6 +164,8 @@
   transition: opacity 0.3s ease-in-out;
   right: 12px;
   bottom: 12px;
+  /* Vertically align with speaker icon (top: 12px for speaker, bottom: 12px for gear) */
+}
 }
 
 #slide-clock-container:hover #case-sound-toggle,
