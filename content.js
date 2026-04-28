@@ -104,14 +104,7 @@ const donationIcon = document.getElementById('donation-link');
 const maximizeIcon = document.getElementById('btn-maximize');
 const settingsGear = document.getElementById('settings-gear');
 
-// Make the whole clock face toggle settings (minimal/full mode) on click
-clockFace.addEventListener('click', (e) => {
-    // Prevent toggling if clicking on a control inside the clock face
-    if (e.target.closest('.block-row') || e.target.closest('.controls') || e.target.closest('.resize-handle')) return;
-    if (!container.classList.contains('maximized-mode')) {
-        toggleMinimalModeWithScaling();
-    }
-});
+// (Removed: toggling settings by clicking the clock face. Now only the gear icon toggles settings.)
 
 // Cache clock hand references
 let secondHand = null;
