@@ -162,8 +162,8 @@
   color: white;
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
-  right: 8px;
-  bottom: 8px;
+  right: 12px;
+  bottom: 12px;
 }
 
 #slide-clock-container:hover #case-sound-toggle,
