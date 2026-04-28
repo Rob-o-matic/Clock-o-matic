@@ -19,15 +19,8 @@
       <a href="PRIVACY.md" style="color:#fff;text-decoration:underline;opacity:0.85;">Privacy</a>
     </span>
   </div>
-  <div id="version-indicator" style="position:fixed;bottom:10px;left:10px;color:#fff;font-size:13px;z-index:9999;text-align:left;opacity:0.7;"></div>
-  <script>
-    // Show version as last script save date/time, always fetch latest
-    const bust = Date.now();
-    fetch('content.js?v=' + bust, {cache: 'reload'}).then(r => r.headers.get('last-modified')).then(date => {
-      document.getElementById('version-indicator').textContent = date ? `v${date.replace(/:|\s|GMT/g,'-').replace(/--+/g,'-')}` : `v${new Date().toLocaleString()}`;
-    }).catch(() => {
-      document.getElementById('version-indicator').textContent = `v${new Date().toLocaleString()}`;
-    });
-  </script>
+  <div id="version-indicator" style="position:fixed;bottom:10px;left:10px;color:#fff;font-size:13px;z-index:9999;text-align:left;opacity:0.7;">
+    Version: 2026.04.28.1
+  </div>
 </body>
 </html>
