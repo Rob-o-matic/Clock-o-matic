@@ -162,12 +162,10 @@
   color: white;
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
-  right: 12px;
-  bottom: 12px;
-}
-.clock-face #settings-gear {
-  right: 12px;
-  bottom: 12px;
+  /* Position just outside bottom right of clock face */
+  left: calc(50% + 80px); /* 80px is half the clock-face width + border */
+  top: calc(50% + 80px);
+  transform: translate(-50%, -50%);
 }
 
 #slide-clock-container:hover #case-sound-toggle,

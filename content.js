@@ -50,7 +50,6 @@ const createClockHTML = () => {
             <div id="case-sound-toggle" title="Toggle Sound"></div>
 
             <div class="clock-face">
-                <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
                 ${ticksHTML}
                 ${numbersHTML}
                 <div id="labels-container"></div>
@@ -61,6 +60,7 @@ const createClockHTML = () => {
                 <div class="hand second-hand"></div>
                 <div class="center-dot"></div>
             </div>
+            <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
 
             <div class="controls">
                 <div style="font-size:11px; color:#aaa; margin-bottom:4px; display:flex; padding:0 5px;">
