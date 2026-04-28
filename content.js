@@ -1,4 +1,9 @@
 // --- CONFIGURATION ---
+// Convert a timestamp (ms) to a rotation in degrees for the minute hand
+function computeRotationFromTimestamp(ts) {
+    const date = new Date(ts);
+    return (date.getMinutes() + date.getSeconds() / 60) * 6;
+}
 const DONATION_URL = "https://www.buymeacoffee.com/Robomatic"; 
 
 // --- SVG ICONS ---
