@@ -37,14 +37,14 @@
 
 /* Visual indicator for settings panel */
 #slide-clock-container .controls {
-  background: rgba(102, 187, 106, 0.15);
-  border: 3px solid #66FF66;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px 2px rgba(102,187,106,0.25);
+  background: rgba(255, 255, 255, 0.92);
+  border: 4px solid #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   margin-top: 10px;
   padding: 12px 8px 8px 8px;
   transition: background 0.2s, border 0.2s;
-  outline: 3px solid #fff;
+  outline: none;
 }
 
 
@@ -157,7 +157,8 @@
 #slide-clock-container:hover #case-sound-toggle,
 #slide-clock-container:hover #donation-link,
 #slide-clock-container:hover #btn-maximize,
-#slide-clock-container:hover #settings-gear {
+#slide-clock-container:hover #settings-gear,
+#slide-clock-container .controls ~ #settings-gear {
   opacity: 0.6;
 }
 #case-sound-toggle:hover, #donation-link:hover, #btn-maximize:hover, #settings-gear:hover { opacity: 1 !important; }
