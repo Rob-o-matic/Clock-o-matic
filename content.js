@@ -18,40 +18,24 @@ let audioCtx = null; // reused to avoid creating a new AudioContext per chime
 
 const createClockHTML = () => {
     const numbersHTML = [...Array(12)].map((_, i) => {
-        const num = i + 1;
-        const angleDeg = (num * 30) - 90;
-        const angleRad = angleDeg * (Math.PI / 180);
-        const radius = 35;
-        const x = 50 + (radius * Math.cos(angleRad));
-        const y = 50 + (radius * Math.sin(angleRad));
-        return `<div class="number" style="left:${x}%; top:${y}%">${num}</div>`;
-    }).join('');
-
-    const ticksHTML = [...Array(60)].map((_, i) => {
-        const isHour = i % 5 === 0;
-        const className = isHour ? 'tick major' : 'tick minor';
-        return `<div class="${className}" style="transform: rotate(${i * 6}deg)"></div>`;
-    }).join('');
-
-    return `
-    <div id="slide-clock-container" style="display:none;">
-      <!-- Resize Handles -->
-      <div class="resize-handle corner top-left"></div>
-      <div class="resize-handle corner top-right"></div>
-      <div class="resize-handle corner bottom-left"></div>
-      <div class="resize-handle corner bottom-right"></div>
-      <div class="resize-handle edge top"></div>
-      <div class="resize-handle edge bottom"></div>
-      <div class="resize-handle edge left"></div>
-      <div class="resize-handle edge right"></div>
-
+        return `
+        <div id="slide-clock-container" style="display:none;">
+            <!-- Resize Handles -->
+            <div class="resize-handle corner top-left"></div>
+            <div class="resize-handle corner top-right"></div>
+            <div class="resize-handle corner bottom-left"></div>
+            <div class="resize-handle corner bottom-right"></div>
+            <div class="resize-handle edge top"></div>
+            <div class="resize-handle edge bottom"></div>
+            <div class="resize-handle edge left"></div>
+            <div class="resize-handle edge right"></div>
 
             <!-- Icons -->
             <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
             <div id="case-sound-toggle" title="Toggle Sound"></div>
+            <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
 
             <div class="clock-face">
-                <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
                 ${ticksHTML}
                 ${numbersHTML}
                 <div id="labels-container"></div>
@@ -63,6 +47,21 @@ const createClockHTML = () => {
                 <div class="center-dot"></div>
             </div>
 
+            <div class="controls">
+                <div style="font-size:11px; color:#aaa; margin-bottom:4px; display:flex; padding:0 5px;">
+                        <span style="width:40px; text-align:center;">Mins</span>
+                        <span style="flex:1; padding-left:5px;">Label</span>
+                        <span style="width:24px;">Color</span>
+                        <span style="width:20px;"></span>
+                </div>
+
+                <div id="rows-container"></div>
+
+                <button id="btn-add-row" title="Add another block">+</button>
+
+                <div class="row" style="margin-top:8px;">
+                         <button id="btn-set-block">Set Visual Schedule</button>
+                         <button id="btn-clear-block">Clear</button>"
       <div class="controls">
         <div style="font-size:11px; color:#aaa; margin-bottom:4px; display:flex; padding:0 5px;">
             <span style="width:40px; text-align:center;">Mins</span>
