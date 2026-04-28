@@ -150,9 +150,10 @@ btnClearBlock?.setAttribute('aria-label', 'Clear visual schedule');
 if (settingsGear) {
     settingsGear.addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleMinimalModeWithScaling(false); // Always expand settings
+        // Toggle settings panel (expand/collapse)
+        toggleMinimalModeWithScaling();
     });
-    attachKeyboardActivation(settingsGear, () => toggleMinimalModeWithScaling(false));
+    attachKeyboardActivation(settingsGear, () => toggleMinimalModeWithScaling());
 }
 
 
