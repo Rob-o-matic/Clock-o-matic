@@ -909,12 +909,9 @@ container.addEventListener('mousedown', (e) => {
         container.onmouseup = null;
         if (hasMoved) {
             saveState();
-        } else {
-            if(!container.classList.contains('maximized-mode')) {
-                toggleMinimalModeWithScaling();
-            }
         }
-}
+        // Removed: toggling minimal mode on click of container (clock face)
+    }
 });
 function getStartRotation() {
     if (scheduleStartRotation !== null && scheduleStartRotation !== undefined) return scheduleStartRotation;
