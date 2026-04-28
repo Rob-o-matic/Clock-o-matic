@@ -164,6 +164,16 @@
   transition: opacity 0.3s ease-in-out;
   right: 12px;
   bottom: 12px;
+  /* Mirror the speaker icon's position using transform */
+  transform: translateY(0) translateX(0);
+}
+
+/* When the clock face is a perfect circle, the speaker and gear should be at the same angle from the center. If the gear overlaps the face, nudge it out: */
+#settings-gear {
+  /* Move gear outwards if overlapping the face */
+  /* Adjust the translateY value as needed (e.g., 8px or 12px) */
+  transform: translateY(8px);
+}
   /* Vertically align with speaker icon (top: 12px for speaker, bottom: 12px for gear) */
 }
 }
