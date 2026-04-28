@@ -102,7 +102,8 @@ const btnClearBlock = document.getElementById('btn-clear-block');
 const caseIcon = document.getElementById('case-sound-toggle');
 const donationIcon = document.getElementById('donation-link');
 const maximizeIcon = document.getElementById('btn-maximize');
-const settingsGear = document.getElementById('settings-gear');
+// Delay settingsGear selection until after DOM is ready
+let settingsGear = null;
 
 // (Removed: toggling settings by clicking the clock face. Now only the gear icon toggles settings.)
 
@@ -139,15 +140,19 @@ settingsGear?.setAttribute('aria-label', 'Show/hide settings');
 btnAddRow?.setAttribute('aria-label', 'Add block row');
 btnSetBlock?.setAttribute('aria-label', 'Set visual schedule');
 btnClearBlock?.setAttribute('aria-label', 'Clear visual schedule');
+
 // --- SETTINGS GEAR LOGIC ---
-if (settingsGear) {
-    settingsGear.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Toggle settings panel (expand/collapse)
-        toggleMinimalModeWithScaling();
-    });
-    attachKeyboardActivation(settingsGear, () => toggleMinimalModeWithScaling());
-}
+window.addEventListener('DOMContentLoaded', () => {
+    settingsGear = document.getElementById('settings-gear');
+    if (settingsGear) {
+        settingsGear.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Toggle settings panel (expand/collapse)
+            toggleMinimalModeWithScaling();
+        });
+        attachKeyboardActivation(settingsGear, () => toggleMinimalModeWithScaling());
+    }
+});
 
 
 let intervalId = null;
