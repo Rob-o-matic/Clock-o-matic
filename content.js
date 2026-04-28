@@ -747,15 +747,13 @@ function attachLabelDragHandlers() {
 }
 
 function setSchedule() {
+    // If a schedule is already set, reset everything to now
+    const isActive = !!scheduleStartTime;
     activeBlocks = [];
     alarmQueue = [];
-    // Only set scheduleStartTime if not already set (preserve across refresh)
-    if (!scheduleStartTime) {
-        scheduleStartTime = Date.now();
-        scheduleStartRotation = computeRotationFromTimestamp(scheduleStartTime);
-    }
+    scheduleStartTime = Date.now();
+    scheduleStartRotation = computeRotationFromTimestamp(scheduleStartTime);
     let cumulativeTime = scheduleStartTime;
-    // Reset any manually dragged offsets so labels realign to their segments for the new schedule
     labelOffsets = {};
     lastBaseLabelPositions = {};
 
@@ -774,7 +772,13 @@ function setSchedule() {
     drawVisualBlocks(activeBlocks);
     container.classList.add('minimal-mode');
     saveState();
+
+    // Update button label to indicate reset
+    if (btnSetBlock) {
+        btnSetBlock.textContent = isActive ? 'Reset!' : 'Start!';
+    }
 }
+btnSetBlock.textContent = 'Start!';
 
 function toggleSound() {
     isSoundOn = !isSoundOn;
