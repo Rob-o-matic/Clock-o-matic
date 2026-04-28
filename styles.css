@@ -6,6 +6,10 @@
   width: 160px;
   height: 160px;
   margin-bottom: 12px;
+  background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.45) 0%, rgba(220,220,220,0.18) 70%, rgba(200,200,200,0.08) 100%);
+  box-shadow: 0 8px 32px 0 rgba(60,60,60,0.12), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+  border-radius: 50%;
+  transition: background 0.3s, box-shadow 0.3s;
 }
 .clock-face {
   position: relative;
