@@ -60,23 +60,13 @@ const createClockHTML = () => {
                 <button id="btn-add-row" title="Add another block">+</button>
 
                 <div class="row" style="margin-top:8px;">
-                         <button id="btn-set-block">Set Visual Schedule</button>
-                         <button id="btn-clear-block">Clear</button>"
-      <div class="controls">
-        <div style="font-size:11px; color:#aaa; margin-bottom:4px; display:flex; padding:0 5px;">
-            <span style="width:40px; text-align:center;">Mins</span>
-            <span style="flex:1; padding-left:5px;">Label</span>
-            <span style="width:24px;">Color</span>
-            <span style="width:20px;"></span>
+                     <button id="btn-set-block">Set Visual Schedule</button>
+                     <button id="btn-clear-block">Clear</button>
+                </div>
+            </div>
         </div>
-
-        <div id="rows-container"></div>
-
-        <button id="btn-add-row" title="Add another block">+</button>
-
-        <div class="row" style="margin-top:8px;">
-             <button id="btn-set-block">Set Visual Schedule</button>
-             <button id="btn-clear-block">Clear</button>
+    </div>
+    `;
         </div>
       </div>
     </div>
