@@ -45,22 +45,23 @@ const createClockHTML = () => {
       <div class="resize-handle edge left"></div>
       <div class="resize-handle edge right"></div>
 
-      <!-- Icons -->
-      <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
-      <div id="case-sound-toggle" title="Toggle Sound"></div>
-      <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
 
-      <div class="clock-face">
-        ${ticksHTML}
-        ${numbersHTML}
-        <div id="labels-container"></div>
-        <div class="brand-logo"></div>
-        <div class="timer-disk"></div>
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-        <div class="center-dot"></div>
-      </div>
+            <!-- Icons -->
+            <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
+            <div id="case-sound-toggle" title="Toggle Sound"></div>
+
+            <div class="clock-face">
+                <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
+                ${ticksHTML}
+                ${numbersHTML}
+                <div id="labels-container"></div>
+                <div class="brand-logo"></div>
+                <div class="timer-disk"></div>
+                <div class="hand hour-hand"></div>
+                <div class="hand min-hand"></div>
+                <div class="hand second-hand"></div>
+                <div class="center-dot"></div>
+            </div>
 
       <div class="controls">
         <div style="font-size:11px; color:#aaa; margin-bottom:4px; display:flex; padding:0 5px;">

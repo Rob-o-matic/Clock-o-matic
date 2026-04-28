@@ -154,9 +154,16 @@
   opacity: 0; transition: opacity 0.3s ease-in-out;
 }
 #settings-gear {
-  position: absolute; z-index: 100; cursor: pointer;
-  width: 28px; height: 28px; color: white;
-  opacity: 0.6; transition: opacity 0.3s ease-in-out;
+  position: absolute;
+  z-index: 120;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  color: white;
+  opacity: 0.6;
+  transition: opacity 0.3s ease-in-out;
+  right: 8px;
+  bottom: 8px;
 }
 
 #slide-clock-container:hover #case-sound-toggle,
@@ -172,7 +179,7 @@
 #donation-link { top: 12px; left: 12px; }
 #btn-maximize  { top: 12px; right: 12px; }
 #case-sound-toggle { top: 12px; right: 12px; }
-#settings-gear { bottom: 12px; right: 12px; }
+#settings-gear { /* now handled above, remove duplicate */ }
 
 /* --- TICKS & NUMBERS --- */
 .tick { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; pointer-events: none; background: linear-gradient(to bottom, black 4%, transparent 4%); }
