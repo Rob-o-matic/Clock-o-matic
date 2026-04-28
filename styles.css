@@ -148,18 +148,24 @@
 }
 
 /* --- ICONS (AUTO-HIDE) --- */
-#case-sound-toggle, #donation-link, #btn-maximize, #settings-gear {
+#case-sound-toggle, #donation-link, #btn-maximize {
   position: absolute; z-index: 100; cursor: pointer;
   width: 28px; height: 28px; color: white;
   opacity: 0; transition: opacity 0.3s ease-in-out;
 }
+#settings-gear {
+  position: absolute; z-index: 100; cursor: pointer;
+  width: 28px; height: 28px; color: white;
+  opacity: 0.6; transition: opacity 0.3s ease-in-out;
+}
 
 #slide-clock-container:hover #case-sound-toggle,
 #slide-clock-container:hover #donation-link,
-#slide-clock-container:hover #btn-maximize,
-#slide-clock-container:hover #settings-gear,
-#slide-clock-container .controls ~ #settings-gear {
+#slide-clock-container:hover #btn-maximize {
   opacity: 0.6;
+}
+#slide-clock-container:hover #settings-gear {
+  opacity: 0.8;
 }
 #case-sound-toggle:hover, #donation-link:hover, #btn-maximize:hover, #settings-gear:hover { opacity: 1 !important; }
 
