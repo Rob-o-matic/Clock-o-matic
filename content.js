@@ -17,7 +17,22 @@ let audioCtx = null; // reused to avoid creating a new AudioContext per chime
 // 1. Create HTML
 
 const createClockHTML = () => {
-    const numbersHTML = [...Array(12)].map((_, i) => {
+        const numbersHTML = [...Array(12)].map((_, i) => {
+                const num = i + 1;
+                const angleDeg = (num * 30) - 90;
+                const angleRad = angleDeg * (Math.PI / 180);
+                const radius = 35;
+                const x = 50 + (radius * Math.cos(angleRad));
+                const y = 50 + (radius * Math.sin(angleRad));
+                return `<div class="number" style="left:${x}%; top:${y}%">${num}</div>`;
+        }).join('');
+
+        const ticksHTML = [...Array(60)].map((_, i) => {
+                const isHour = i % 5 === 0;
+                const className = isHour ? 'tick major' : 'tick minor';
+                return `<div class="${className}" style="transform: rotate(${i * 6}deg)"></div>`;
+        }).join('');
+
         return `
         <div id="slide-clock-container" style="display:none;">
             <!-- Resize Handles -->
@@ -60,17 +75,12 @@ const createClockHTML = () => {
                 <button id="btn-add-row" title="Add another block">+</button>
 
                 <div class="row" style="margin-top:8px;">
-                     <button id="btn-set-block">Set Visual Schedule</button>
-                     <button id="btn-clear-block">Clear</button>
+                         <button id="btn-set-block">Set Visual Schedule</button>
+                         <button id="btn-clear-block">Clear</button>
                 </div>
             </div>
         </div>
-    </div>
-    `;
-        </div>
-      </div>
-    </div>
-    `;
+        `;
 };
 
 document.body.insertAdjacentHTML('beforeend', createClockHTML());
