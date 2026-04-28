@@ -187,7 +187,11 @@ function toggleMinimalModeWithScaling(forceMode) {
         currentScale = originalScale;
         container.style.transform = `scale(${currentScale})`;
     }
-    container.classList.toggle('minimal-mode', typeof forceMode === 'boolean' ? forceMode : undefined);
+    if (typeof forceMode === 'boolean') {
+        container.classList.toggle('minimal-mode', forceMode);
+    } else {
+        container.classList.toggle('minimal-mode');
+    }
     saveState();
 }
 let labelOffsets = {}; // Store user-adjusted label positions by label text
