@@ -165,6 +165,10 @@
   right: 12px;
   bottom: 12px;
 }
+.clock-face #settings-gear {
+  right: 12px;
+  bottom: 12px;
+}
 
 #slide-clock-container:hover #case-sound-toggle,
 #slide-clock-container:hover #donation-link,

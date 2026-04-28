@@ -48,9 +48,9 @@ const createClockHTML = () => {
             <!-- Icons -->
             <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
             <div id="case-sound-toggle" title="Toggle Sound"></div>
-            <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
 
             <div class="clock-face">
+                <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
                 ${ticksHTML}
                 ${numbersHTML}
                 <div id="labels-container"></div>
