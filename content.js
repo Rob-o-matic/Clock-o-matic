@@ -144,7 +144,8 @@ btnClearBlock?.setAttribute('aria-label', 'Clear visual schedule');
 if (settingsGear) {
     settingsGear.addEventListener('click', (e) => {
         e.stopPropagation();
-        console.log('Gear icon clicked');
+        const isMinimal = container.classList.contains('minimal-mode');
+        console.log('[Gear] Clicked. minimal-mode:', isMinimal);
         // Toggle settings panel (expand/collapse)
         toggleMinimalModeWithScaling();
     });
@@ -163,10 +164,18 @@ let originalScale = 1.0; // To remember the user's preferred/original scale
 function toggleMinimalModeWithScaling(forceMode) {
     // forceMode: true = minimal, false = full, undefined = toggle
     const isMinimal = container.classList.contains('minimal-mode');
-    let willShowSettings = isMinimal;
-    if (typeof forceMode === 'boolean') willShowSettings = !forceMode;
-    if (willShowSettings) {
+    let nextMinimal;
+    if (typeof forceMode === 'boolean') {
+        nextMinimal = forceMode;
+        console.log('[toggleMinimalModeWithScaling] forceMode:', forceMode, '-> nextMinimal:', nextMinimal);
+    } else {
+        nextMinimal = !isMinimal;
+        console.log('[toggleMinimalModeWithScaling] toggle. isMinimal:', isMinimal, '-> nextMinimal:', nextMinimal);
+    }
+
+    if (!nextMinimal) {
         // About to show settings (exit minimal-mode): auto-shrink if needed
+        console.log('[toggleMinimalModeWithScaling] Expanding settings panel.');
         originalScale = currentScale; // Remember the user's scale
         container.classList.remove('minimal-mode');
         container.style.transform = `scale(${currentScale})`;
@@ -180,18 +189,17 @@ function toggleMinimalModeWithScaling(forceMode) {
                 scale = Math.max(0.5, maxHeight / rect.height * currentScale);
                 currentScale = scale;
                 container.style.transform = `scale(${currentScale})`;
+                console.log('[toggleMinimalModeWithScaling] Auto-shrunk scale to', currentScale);
             }
         }, 0);
     } else {
         // About to hide settings (enter minimal-mode): restore original scale
+        console.log('[toggleMinimalModeWithScaling] Collapsing settings panel.');
         currentScale = originalScale;
         container.style.transform = `scale(${currentScale})`;
     }
-    if (typeof forceMode === 'boolean') {
-        container.classList.toggle('minimal-mode', forceMode);
-    } else {
-        container.classList.toggle('minimal-mode');
-    }
+    container.classList.toggle('minimal-mode', nextMinimal);
+    console.log('[toggleMinimalModeWithScaling] minimal-mode now:', container.classList.contains('minimal-mode'));
     saveState();
 }
 let labelOffsets = {}; // Store user-adjusted label positions by label text
