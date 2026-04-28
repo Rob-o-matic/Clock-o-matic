@@ -1,3 +1,18 @@
+.clock-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 160px;
+  margin-bottom: 12px;
+}
+.clock-face {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  /* ...existing code... */
+}
 #slide-clock-container {
   position: fixed; top: 20px; right: 20px;
   width: 260px;
@@ -153,7 +168,7 @@
   width: 28px; height: 28px; color: white;
   opacity: 0; transition: opacity 0.3s ease-in-out;
 }
-.clock-face #settings-gear {
+#settings-gear {
   position: absolute;
   z-index: 120;
   cursor: pointer;
@@ -162,8 +177,8 @@
   color: white;
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
-  right: -18px; /* 12px gap + 6px border */
-  bottom: -18px; /* 12px gap + 6px border */
+  right: -18px;
+  bottom: -18px;
 }
 
 #slide-clock-container:hover #case-sound-toggle,

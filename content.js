@@ -49,16 +49,18 @@ const createClockHTML = () => {
             <div id="donation-link" title="Buy me a coffee">${ICON_COFFEE}</div>
             <div id="case-sound-toggle" title="Toggle Sound"></div>
 
-            <div class="clock-face">
-                ${ticksHTML}
-                ${numbersHTML}
-                <div id="labels-container"></div>
-                <div class="brand-logo"></div>
-                <div class="timer-disk"></div>
-                <div class="hand hour-hand"></div>
-                <div class="hand min-hand"></div>
-                <div class="hand second-hand"></div>
-                <div class="center-dot"></div>
+            <div class="clock-wrapper">
+                <div class="clock-face">
+                    ${ticksHTML}
+                    ${numbersHTML}
+                    <div id="labels-container"></div>
+                    <div class="brand-logo"></div>
+                    <div class="timer-disk"></div>
+                    <div class="hand hour-hand"></div>
+                    <div class="hand min-hand"></div>
+                    <div class="hand second-hand"></div>
+                    <div class="center-dot"></div>
+                </div>
                 <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
             </div>
 
