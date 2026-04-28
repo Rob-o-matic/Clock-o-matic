@@ -59,8 +59,8 @@ const createClockHTML = () => {
                 <div class="hand min-hand"></div>
                 <div class="hand second-hand"></div>
                 <div class="center-dot"></div>
+                <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
             </div>
-            <div id="settings-gear" title="Settings">${ICON_GEAR}</div>
 
             <div class="controls">
                 <div style="font-size:11px; color:#aaa; margin-bottom:4px; display:flex; padding:0 5px;">

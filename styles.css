@@ -153,7 +153,7 @@
   width: 28px; height: 28px; color: white;
   opacity: 0; transition: opacity 0.3s ease-in-out;
 }
-#settings-gear {
+.clock-face #settings-gear {
   position: absolute;
   z-index: 120;
   cursor: pointer;
@@ -162,10 +162,8 @@
   color: white;
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
-  /* Position just outside bottom right of clock face */
-  left: calc(50% + 80px); /* 80px is half the clock-face width + border */
-  top: calc(50% + 80px);
-  transform: translate(-50%, -50%);
+  right: -18px; /* 12px gap + 6px border */
+  bottom: -18px; /* 12px gap + 6px border */
 }
 
 #slide-clock-container:hover #case-sound-toggle,
