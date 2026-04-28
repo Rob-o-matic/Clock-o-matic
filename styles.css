@@ -148,7 +148,7 @@
 }
 
 /* --- ICONS (AUTO-HIDE) --- */
-#case-sound-toggle, #donation-link, #btn-maximize {
+#case-sound-toggle, #donation-link, #btn-maximize, #settings-gear {
   position: absolute; z-index: 100; cursor: pointer;
   width: 28px; height: 28px; color: white;
   opacity: 0; transition: opacity 0.3s ease-in-out;
@@ -156,14 +156,16 @@
 
 #slide-clock-container:hover #case-sound-toggle,
 #slide-clock-container:hover #donation-link,
-#slide-clock-container:hover #btn-maximize {
+#slide-clock-container:hover #btn-maximize,
+#slide-clock-container:hover #settings-gear {
   opacity: 0.6;
 }
-#case-sound-toggle:hover, #donation-link:hover, #btn-maximize:hover { opacity: 1 !important; }
+#case-sound-toggle:hover, #donation-link:hover, #btn-maximize:hover, #settings-gear:hover { opacity: 1 !important; }
 
 #donation-link { top: 12px; left: 12px; }
 #btn-maximize  { top: 12px; right: 12px; }
-#case-sound-toggle { bottom: 12px; right: 12px; }
+#case-sound-toggle { top: 12px; right: 12px; }
+#settings-gear { bottom: 12px; right: 12px; }
 
 /* --- TICKS & NUMBERS --- */
 .tick { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; pointer-events: none; background: linear-gradient(to bottom, black 4%, transparent 4%); }
