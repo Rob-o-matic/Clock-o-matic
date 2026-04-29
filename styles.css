@@ -6,8 +6,8 @@
   width: 160px;
   height: 160px;
   margin-bottom: 12px;
-  background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.45) 0%, rgba(220,220,220,0.18) 70%, rgba(200,200,200,0.08) 100%);
-  box-shadow: 0 8px 32px 0 rgba(60,60,60,0.12), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+  background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.85) 0%, rgba(240,240,240,0.45) 70%, rgba(220,220,220,0.18) 100%);
+  box-shadow: 0 12px 40px 0 rgba(60,60,60,0.18), 0 2px 12px 0 rgba(0,0,0,0.12);
   border-radius: 50%;
   transition: background 0.3s, box-shadow 0.3s;
 }
@@ -29,6 +29,7 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.6);
   transform-origin: top left;
   overflow-y: auto; overflow-x: hidden;
+  touch-action: none;
 }
 
 #slide-clock-container::-webkit-scrollbar { width: 0; }
@@ -169,31 +170,60 @@
 /* --- ICONS (AUTO-HIDE) --- */
 #case-sound-toggle, #donation-link, #btn-maximize {
   position: absolute; z-index: 100; cursor: pointer;
-  width: 28px; height: 28px; color: white;
+  /* Expanded tap target via padding; visual size stays 28x28 via box-sizing */
+  width: 44px; height: 44px; color: white;
+  display: flex; align-items: center; justify-content: center;
   opacity: 0; transition: opacity 0.3s ease-in-out;
+}
+#case-sound-toggle svg, #donation-link svg, #btn-maximize svg {
+  width: 28px; height: 28px; flex-shrink: 0; pointer-events: none;
 }
 #settings-gear {
   position: absolute;
   z-index: 120;
   cursor: pointer;
-  width: 28px;
-  height: 28px;
+  /* Expanded tap target; visual SVG stays 28x28 */
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  opacity: 0.6;
+  opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
-  right: -18px;
-  bottom: -18px;
+  /* Shift anchor so the visual icon still sits at bottom-right of clock-wrapper */
+  right: -26px;
+  bottom: -26px;
+}
+#settings-gear svg {
+  width: 28px; height: 28px; flex-shrink: 0; pointer-events: none;
 }
 
+/* On hover (mouse) reveal auto-hide icons */
 #slide-clock-container:hover #case-sound-toggle,
 #slide-clock-container:hover #donation-link,
 #slide-clock-container:hover #btn-maximize {
   opacity: 0.6;
 }
 #slide-clock-container:hover #settings-gear {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 #case-sound-toggle:hover, #donation-link:hover, #btn-maximize:hover, #settings-gear:hover { opacity: 1 !important; }
+
+/* On touchscreen there is no hover: keep sound toggle always faintly visible */
+@media (hover: none) {
+  #case-sound-toggle {
+    opacity: 0.6;
+  }
+}
+
+/* Focus states also reveal the icon (keyboard navigation) */
+#case-sound-toggle:focus-within,
+#donation-link:focus-within,
+#btn-maximize:focus-within,
+#settings-gear:focus-within {
+  opacity: 1;
+}
 
 #donation-link { top: 12px; left: 12px; }
 #btn-maximize  { top: 12px; right: 12px; }
@@ -217,21 +247,24 @@
 .row { display: flex; justify-content: space-between; gap: 5px; }
 #rows-container { display: flex; flex-direction: column; gap: 4px; width: 100%; }
 .block-row { display: flex; gap: 4px; align-items: center; }
-.block-row input[type="number"] { width: 40px; padding: 4px; border-radius: 4px; border: none; text-align: center; font-size: 11px; }
-.block-row input[type="text"] { flex: 1; padding: 4px; border-radius: 4px; border: none; font-size: 11px; }
-.block-row input[type="color"] { width: 24px; height: 24px; border: none; background: none; cursor: pointer; padding: 0;}
+.block-row input[type="number"] { width: 44px; min-height: 36px; padding: 4px; border-radius: 4px; border: none; text-align: center; font-size: 13px; }
+.block-row input[type="text"] { flex: 1; min-height: 36px; padding: 4px; border-radius: 4px; border: none; font-size: 13px; }
+.block-row input[type="color"] { width: 36px; height: 36px; border: none; background: none; cursor: pointer; padding: 0; border-radius: 4px; }
 
-button { padding: 6px 10px; border: none; background: #444; color: white; border-radius: 4px; cursor: pointer; font-size: 12px; flex: 1; }
+button { padding: 10px 10px; min-height: 44px; border: none; background: #444; color: white; border-radius: 4px; cursor: pointer; font-size: 13px; flex: 1; }
 button:hover { background: #666; }
 #slide-clock-container button:focus-visible { outline: 2px solid #42A5F5; outline-offset: 2px; }
-#btn-set-block { background: #00C853; font-weight: bold; }
-#btn-set-block:hover { background: #00E676; }
+/* #00C853 gives only 2.24:1 contrast with white text — use black text instead (9.39:1) */
+#btn-set-block { background: #00C853; color: #000; font-weight: bold; }
+#btn-set-block:hover { background: #00E676; color: #000; }
 #btn-clear-block { background: #555; }
-.btn-remove { flex: 0 0 20px; height: 20px; background: #ff4444; color: white; border-radius: 50%; font-weight: bold; padding: 0; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+.btn-remove { flex: 0 0 36px; height: 36px; background: #ff4444; color: white; border-radius: 50%; font-weight: bold; padding: 0; font-size: 14px; display: flex; align-items: center; justify-content: center; }
 .btn-remove:hover { background: #ff0000; }
-#btn-add-row { background: transparent; border: 1px dashed #666; color: #aaa; margin-bottom: 5px; font-size: 16px; line-height: 1; padding: 2px; }
+#btn-add-row { background: transparent; border: 1px dashed #666; color: #aaa; margin-bottom: 5px; font-size: 20px; line-height: 1; min-height: 44px; padding: 4px; }
 #btn-add-row:hover { background: rgba(255,255,255,0.1); color: white; border-color: white; }
-#case-sound-toggle:focus-visible, #donation-link:focus-visible, #btn-maximize:focus-visible {
+#case-sound-toggle:focus-visible, #donation-link:focus-visible, #btn-maximize:focus-visible,
+#settings-gear:focus-visible {
   outline: 2px solid #42A5F5;
   outline-offset: 4px;
+  opacity: 1;
 }

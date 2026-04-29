@@ -149,8 +149,6 @@ btnClearBlock?.setAttribute('aria-label', 'Clear visual schedule');
 if (settingsGear) {
     settingsGear.addEventListener('click', (e) => {
         e.stopPropagation();
-        const isMinimal = container.classList.contains('minimal-mode');
-        console.log('[Gear] Clicked. minimal-mode:', isMinimal);
         // Toggle settings panel (expand/collapse)
         toggleMinimalModeWithScaling();
     });
@@ -172,15 +170,12 @@ function toggleMinimalModeWithScaling(forceMode) {
     let nextMinimal;
     if (typeof forceMode === 'boolean') {
         nextMinimal = forceMode;
-        console.log('[toggleMinimalModeWithScaling] forceMode:', forceMode, '-> nextMinimal:', nextMinimal);
     } else {
         nextMinimal = !isMinimal;
-        console.log('[toggleMinimalModeWithScaling] toggle. isMinimal:', isMinimal, '-> nextMinimal:', nextMinimal);
     }
 
     if (!nextMinimal) {
         // About to show settings (exit minimal-mode): auto-shrink if needed
-        console.log('[toggleMinimalModeWithScaling] Expanding settings panel.');
         originalScale = currentScale; // Remember the user's scale
         container.classList.remove('minimal-mode');
         container.style.transform = `scale(${currentScale})`;
@@ -194,17 +189,14 @@ function toggleMinimalModeWithScaling(forceMode) {
                 scale = Math.max(0.5, maxHeight / rect.height * currentScale);
                 currentScale = scale;
                 container.style.transform = `scale(${currentScale})`;
-                console.log('[toggleMinimalModeWithScaling] Auto-shrunk scale to', currentScale);
             }
         }, 0);
     } else {
         // About to hide settings (enter minimal-mode): restore original scale
-        console.log('[toggleMinimalModeWithScaling] Collapsing settings panel.');
         currentScale = originalScale;
         container.style.transform = `scale(${currentScale})`;
     }
     container.classList.toggle('minimal-mode', nextMinimal);
-    console.log('[toggleMinimalModeWithScaling] minimal-mode now:', container.classList.contains('minimal-mode'));
     saveState();
 }
 let labelOffsets = {}; // Store user-adjusted label positions by label text
@@ -438,7 +430,7 @@ function updateClockHands() {
             hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
         }
     } catch (e) {
-        console.warn('Clock hands update error:', e);
+        console.error('Clock hands update error:', e);
     }
 
     // Update visual blocks to show progress (only if schedule is active)
@@ -446,7 +438,7 @@ function updateClockHands() {
         try {
             updateVisualBlocksProgress();
         } catch (e) {
-            console.warn('Visual blocks update error:', e);
+            console.error('Visual blocks update error:', e);
         }
     }
 
@@ -710,8 +702,9 @@ function updateLabelPositions(startRotation) {
 
 function attachLabelDragHandlers() {
     document.querySelectorAll('.block-label').forEach(label => {
-        label.addEventListener('mousedown', (e) => {
+        label.addEventListener('pointerdown', (e) => {
             e.stopPropagation();
+            label.setPointerCapture(e.pointerId);
             const labelText = label.getAttribute('data-label');
             const labelIndex = parseInt(label.getAttribute('data-idx'), 10);
             const clockRect = clockFace.getBoundingClientRect();
@@ -719,16 +712,16 @@ function attachLabelDragHandlers() {
             const startY = e.clientY;
             const startLeft = parseFloat(label.style.left);
             const startTop = parseFloat(label.style.top);
-            
-            function onMouseMove(event) {
+
+            function onPointerMove(event) {
                 const dx = ((event.clientX - startX) / clockRect.width) * 100;
                 const dy = ((event.clientY - startY) / clockRect.height) * 100;
                 const newX = Math.max(5, Math.min(95, startLeft + dx));
                 const newY = Math.max(5, Math.min(95, startTop + dy));
-                
+
                 label.style.left = newX + '%';
                 label.style.top = newY + '%';
-                
+
                 // Store offset relative to the current base position (if known)
                 const base = lastBaseLabelPositions[labelIndex];
                 if (base) {
@@ -738,22 +731,23 @@ function attachLabelDragHandlers() {
                     labelOffsets[labelText] = { x: newX, y: newY };
                 }
             }
-            
-            function onMouseUp() {
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
+
+            function onPointerUp() {
+                document.removeEventListener('pointermove', onPointerMove);
+                document.removeEventListener('pointerup', onPointerUp);
+                document.removeEventListener('pointercancel', onPointerUp);
                 saveState();
             }
-            
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
+
+            document.addEventListener('pointermove', onPointerMove);
+            document.addEventListener('pointerup', onPointerUp);
+            document.addEventListener('pointercancel', onPointerUp);
         });
     });
 }
 
 function setSchedule() {
     // If a schedule is already set, reset everything to now
-    const isActive = !!scheduleStartTime;
     activeBlocks = [];
     alarmQueue = [];
     scheduleStartTime = Date.now();
@@ -778,12 +772,10 @@ function setSchedule() {
     container.classList.add('minimal-mode');
     saveState();
 
-    // Update button label to indicate reset
     if (btnSetBlock) {
-        btnSetBlock.textContent = isActive ? 'Reset!' : 'Start!';
+        btnSetBlock.textContent = 'Reset!';
     }
 }
-btnSetBlock.textContent = 'Start!';
 
 function toggleSound() {
     isSoundOn = !isSoundOn;
@@ -823,7 +815,8 @@ btnClearBlock.addEventListener('click', () => {
     scheduleStartTime = null;
     scheduleEndTime = null;
     scheduleStartRotation = null;
-    clockFace.classList.remove('alarm-active'); 
+    clockFace.classList.remove('alarm-active');
+    if (btnSetBlock) btnSetBlock.textContent = 'Start!';
     saveState();
 });
 
@@ -835,12 +828,13 @@ let resizeDirection = null;
 
 // Resize logic
 document.querySelectorAll('.resize-handle').forEach(handle => {
-    handle.addEventListener('mousedown', (e) => {
+    handle.addEventListener('pointerdown', (e) => {
         if(container.classList.contains('maximized-mode')) return;
         e.stopPropagation();
+        handle.setPointerCapture(e.pointerId);
         isResizing = true;
         hasMoved = true;
-        
+
         // Determine direction from classes
         if (handle.classList.contains('top-left')) resizeDirection = 'nw';
         else if (handle.classList.contains('top-right')) resizeDirection = 'ne';
@@ -850,15 +844,15 @@ document.querySelectorAll('.resize-handle').forEach(handle => {
         else if (handle.classList.contains('bottom')) resizeDirection = 's';
         else if (handle.classList.contains('left')) resizeDirection = 'w';
         else if (handle.classList.contains('right')) resizeDirection = 'e';
-        
+
         const startX = e.clientX;
         const startY = e.clientY;
         const startScale = currentScale;
         const rect = container.getBoundingClientRect();
         const startLeft = parseFloat(container.style.left) || rect.left;
         const startTop = parseFloat(container.style.top) || rect.top;
-        
-        function onMouseMove(event) {
+
+        function onPointerMove(event) {
             if (!isResizing) return;
             let scale = startScale;
             if (resizeDirection.length === 2) {
@@ -878,49 +872,56 @@ document.querySelectorAll('.resize-handle').forEach(handle => {
             currentScale = scale;
             container.style.transform = `scale(${currentScale})`;
         }
-        
-        function onMouseUp() {
+
+        function onPointerUp() {
             isResizing = false;
             resizeDirection = null;
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
+            document.removeEventListener('pointermove', onPointerMove);
+            document.removeEventListener('pointerup', onPointerUp);
+            document.removeEventListener('pointercancel', onPointerUp);
             saveState();
         }
-        
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+
+        document.addEventListener('pointermove', onPointerMove);
+        document.addEventListener('pointerup', onPointerUp);
+        document.addEventListener('pointercancel', onPointerUp);
     });
 });
 
 // Drag logic
-container.addEventListener('mousedown', (e) => {
+container.addEventListener('pointerdown', (e) => {
     if(container.classList.contains('maximized-mode')) return;
     if(isResizing) return;
     if(['BUTTON', 'INPUT'].includes(e.target.tagName) || e.target.closest('.block-row') || e.target.closest('#case-sound-toggle') || e.target.closest('#donation-link') || e.target.closest('#btn-maximize') || e.target.closest('.resize-handle')) return;
-    
+
+    container.setPointerCapture(e.pointerId);
     isDragging = true;
-    hasMoved = false; 
+    hasMoved = false;
     let shiftX = e.clientX - container.getBoundingClientRect().left;
     let shiftY = e.clientY - container.getBoundingClientRect().top;
-    
-    function onMouseMove(event) {
+
+    function onPointerMove(event) {
         if (isDragging) {
             hasMoved = true;
             container.style.left = event.clientX - shiftX + 'px';
             container.style.top = event.clientY - shiftY + 'px';
         }
     }
-    const targetArea = document.fullscreenElement || document;
-    targetArea.addEventListener('mousemove', onMouseMove);
-    container.onmouseup = function() {
+
+    function onPointerUp() {
         isDragging = false;
-        targetArea.removeEventListener('mousemove', onMouseMove);
-        container.onmouseup = null;
+        container.removeEventListener('pointermove', onPointerMove);
+        container.removeEventListener('pointerup', onPointerUp);
+        container.removeEventListener('pointercancel', onPointerUp);
         if (hasMoved) {
             saveState();
         }
         // Removed: toggling minimal mode on click of container (clock face)
     }
+
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerup', onPointerUp);
+    container.addEventListener('pointercancel', onPointerUp);
 });
 function getStartRotation() {
     if (scheduleStartRotation !== null && scheduleStartRotation !== undefined) return scheduleStartRotation;
